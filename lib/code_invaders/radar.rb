@@ -5,11 +5,13 @@ class CodeInvaders
   # and the grid of the pattern
   class Radar
     include PatternMatcher
-    MINIMUM_HIT_PRECISION = 75
     attr_reader :result
 
-    def initialize(radar_sample)
-      @radar_sample = radar_sample.split('\n').map { |line| line.split('') }
+    MINIMUM_HIT_PRECISION = 75
+
+    def initialize(radar_sample_file)
+      radar_sample = File.read("#{Dir.pwd}/assets/radar/#{radar_sample_file}")
+      @radar_sample = radar_sample.split("\n")
       @width = @radar_sample.first.length
       @height = @radar_sample.length
       @result = {}
@@ -40,7 +42,7 @@ class CodeInvaders
             @result[invader.name] << {
               x: x,
               y: y,
-              hit: precision_percentage
+              hit_percentage: precision_percentage
             }
           end
         end

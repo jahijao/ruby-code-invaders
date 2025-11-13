@@ -8,6 +8,7 @@ if keyboard_input.empty?
   exit
 end
 
-radar_sample = keyboard_input[0]
-invaders = CodeInvaders.new(radar_sample)
+radar_sample_file = keyboard_input[0]
+invaders = CodeInvaders.new(radar_sample_file)
 invaders.run
+invaders.print_results
