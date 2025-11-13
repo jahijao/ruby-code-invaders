@@ -5,7 +5,7 @@ class CodeInvaders
   # and the grid of the pattern
   class Radar
     include PatternMatcher
-
+    MINIMUM_HIT_PRECISION = 75
     attr_reader :result
 
     def initialize(radar_sample)
@@ -18,19 +18,30 @@ class CodeInvaders
     def locate_invaders(invaders)
       invaders.each do |invader|
         @result[invader.name] ||= []
-        # we are referencing the top left coordinates of the invader
+
         possible_x_coords = @width - invader.width + 1
         possible_y_coords = @height - invader.height + 1
 
         if possible_x_coords.negative? || possible_y_coords.negative?
-          puts "[ERROR] Radar sample to small for #{invader.name}"
+          puts "[ERROR] Radar sample too small for #{invader.name}"
           next
         end
 
         possible_y_coords.times do |y|
           possible_x_coords.times do |x|
-            subpattern = @radar_sample[y..y + invader.height].map { |line| line[x..x + invader.width] }
-            @result[invader.name] << [x, y] if match_pattern?(invader.pattern, subpattern)
+            subpattern = @radar_sample[y, invader.height].map { |line| line[x, invader.width] }
+            precision_percentage = pattern_match(invader.pattern, subpattern)
+            next unless precision_percentage >= MINIMUM_HIT_PRECISION
+
+            next if @result[invader.name].any? do |res|
+              (res[:x] - x).abs < invader.width || (res[:y] - y).abs < invader.height
+            end
+
+            @result[invader.name] << {
+              x: x,
+              y: y,
+              hit: precision_percentage
+            }
           end
         end
       end
