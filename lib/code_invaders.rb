@@ -1,21 +1,18 @@
 require 'code_invaders/invader'
 require 'code_invaders/radar'
 
-# CodeInvaders class needs to initialize the radar and the invaders
-# and then run the scan and output the result
+# The CodeInvaders class is the main class of the application
+# it needs to load the radar sample and the invaders patterns
+# use the pattern matcher to try and find the invaders
+# display the resulting coords
 class CodeInvaders
   def initialize(radar_sample)
-    @invaders = []
-    @radar_sample = radar_sample
+    @invaders = CodeInvaders::Invader.initialize_invaders
+    @radar = CodeInvaders::Radar.new(radar_sample)
   end
 
   def run
-    Dir.glob('assets/invaders/*.txt').map do |file|
-      name = File.basename(file, '.txt')
-      pattern = File.read(file)
-      @invaders << CodeInvaders::Invader.new(name, pattern)
-    end
-
-    puts @invaders.count
+    @radar.locate_invaders(@invaders)
+    puts @radar.result
   end
 end

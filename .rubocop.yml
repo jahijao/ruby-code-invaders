@@ -2,3 +2,7 @@ Style/FrozenStringLiteralComment:
   Enabled: false
 Style/ClassAndModuleChildren:
   Enabled: false
+Metrics/MethodLength:
+  Enabled: false
+Metrics/AbcSize:
+  Enabled: false
