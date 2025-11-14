@@ -21,8 +21,8 @@ class CodeInvaders
       invaders.each do |invader|
         @result[invader.name] ||= []
 
-        possible_x_coords = @width - invader.width + 1
-        possible_y_coords = @height - invader.height + 1
+        possible_x_coords = @width - invader.width
+        possible_y_coords = @height - invader.height
 
         if possible_x_coords.negative? || possible_y_coords.negative?
           puts "[ERROR] Radar sample too small for #{invader.name}"
@@ -36,7 +36,7 @@ class CodeInvaders
             next unless precision_percentage >= MINIMUM_HIT_PRECISION
 
             next if @result[invader.name].any? do |res|
-              (res[:x] - x).abs < invader.width || (res[:y] - y).abs < invader.height
+              (res[:x] - x).abs < invader.width && (res[:y] - y).abs < invader.height
             end
 
             @result[invader.name] << {
