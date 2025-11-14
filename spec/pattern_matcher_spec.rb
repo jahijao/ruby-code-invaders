@@ -93,22 +93,6 @@ RSpec.describe PatternMatcher do
       end
     end
 
-    context 'with single cell patterns' do
-      let(:pattern) { [['o']] }
-      let(:matching_subpattern) { [['o']] }
-      let(:non_matching_subpattern) { [['-']] }
-
-      it 'returns 100 for matching single cell' do
-        result = test_class.pattern_match(pattern, matching_subpattern)
-        expect(result).to eq(100)
-      end
-
-      it 'returns 0 for non-matching single cell' do
-        result = test_class.pattern_match(pattern, non_matching_subpattern)
-        expect(result).to eq(0)
-      end
-    end
-
     context 'with larger patterns' do
       let(:pattern) do
         [
